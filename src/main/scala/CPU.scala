@@ -25,7 +25,7 @@ class SCPU extends Module{
     val (cycleCount, _) = Counter(true.B, 1 << 30)
 
     io.imem.address := pc
-    io.imem.valid   := true.B
+    // io.imem.valid   := true.B
 
     pcPlus4.io.inputx := pc
     pcPlus4.io.inputy := 4.U
@@ -60,11 +60,11 @@ class SCPU extends Module{
     io.dmem.memWrite  := decode.io.memWrite
     io.dmem.maskMode  := instr(13,12)
     io.dmem.sext      := ~instr(14)
-    when(io.dmem.memRead || io.dmem.memWrite) {
-      io.dmem.valid := true.B
-    } .otherwise {
-      io.dmem.valid := false.B
-    }
+    // when(io.dmem.memRead || io.dmem.memWrite) {
+      // io.dmem.valid := true.B
+    // } .otherwise {
+      // io.dmem.valid := false.B
+    // }
 
     regFile.io.regWData := Mux(decode.io.toReg === 1.U, io.dmem.readData, result)
 

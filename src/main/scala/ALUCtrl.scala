@@ -22,9 +22,8 @@ class ALUCtrlIo extends Bundle{
     val aluCtrlOp = Input(UInt(2.W))
     val aluOp     = Output(UInt(4.W))
 
-    val aluIn1 = Output(UInt(32.W))
-    val aluIn2 = Output(UInt(32.W))
-
+    // val aluIn1 = Output(UInt(32.W))
+    // val aluIn2 = Output(UInt(32.W))
 }
 
 class ALUCtrl extends Module{

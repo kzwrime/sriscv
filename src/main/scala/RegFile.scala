@@ -18,25 +18,33 @@ class RegFile extends Module{
     val io = IO(new RegFileIO)
     val regs = RegInit(VecInit(Seq.fill(32 - 1)(0.U(32.W))))
 
-    val RData1 = Mux(io.regRAddr1.orR(), regs(io.regRAddr1), 0.U)
-    val RData2 = Mux(io.regRAddr2.orR(), regs(io.regRAddr2), 0.U)
-
+    io.regRData1 := Mux(io.regRAddr1.orR(), regs(io.regRAddr1), 0.U)
+    io.regRData2 := Mux(io.regRAddr2.orR(), regs(io.regRAddr2), 0.U)
     when(io.wen){
-        when(io.regWAddr.orR()){
-            regs(io.regWAddr) := io.regWAddr
+        when(io.regWAddr.orR){
+            regs(io.regWAddr) := io.regWData
         }
-        when(io.regRAddr1 === io.regWAddr){
-            io.regRData1 := io.regWData
-            io.regRData2 := RData2
-        }.elsewhen(io.regRAddr2 === io.regWAddr){
-            io.regRData2 := io.regWData
-            io.regRData1 := RData1
-        }.otherwise{
-            io.regRData1 := RData1
-            io.regRData2 := RData2
-        }
-    }.otherwise{
-        io.regRData1 := RData1
-        io.regRData2 := RData2
     }
+
+    // val RData1 = Mux(io.regRAddr1.orR(), regs(io.regRAddr1), 0.U)
+    // val RData2 = Mux(io.regRAddr2.orR(), regs(io.regRAddr2), 0.U)
+
+    // when(io.wen){
+    //     when(io.regWAddr.orR()){
+    //         regs(io.regWAddr) := io.regWData
+    //     }
+    //     when(io.regRAddr1 === io.regWAddr){
+    //         io.regRData1 := io.regWData
+    //         io.regRData2 := RData2
+    //     }.elsewhen(io.regRAddr2 === io.regWAddr){
+    //         io.regRData2 := io.regWData
+    //         io.regRData1 := RData1
+    //     }.otherwise{
+    //         io.regRData1 := RData1
+    //         io.regRData2 := RData2
+    //     }
+    // }.otherwise{
+    //     io.regRData1 := RData1
+    //     io.regRData2 := RData2
+    // }
 }

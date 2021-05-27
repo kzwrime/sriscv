@@ -42,7 +42,7 @@ class DecodeSignals extends Bundle{
     val aluCtrlOp = Output(UInt(2.W))    // 00: l/s, 10
     val validInst = Output(Bool())
 
-    val csrctl    = Output(UInt(3.W))
+    // val csrctl    = Output(UInt(3.W))
 
     val imm       = Output(UInt(32.W))
 }
@@ -67,12 +67,12 @@ class Decode extends Module{
 
     // TODO all use asSInt
     io.imm := Mux1H(Seq(
-      /* R-type*/ io.types(0) -> 32.U,
-      /* I-type*/ io.types(1) -> io.instr(31, 20).asSInt,
-      /* S-type*/ io.types(2) -> Cat(Fill(20, io.instr(31)), io.instr(31, 25), io.instr(11, 7)),
+      /* R-type*/ io.types(6) -> 32.U,
+      /* I-type*/ io.types(5) -> io.instr(31, 20).asSInt.asUInt,
+      /* S-type*/ io.types(4) -> Cat(Fill(20, io.instr(31)), io.instr(31, 25), io.instr(11, 7)),
       /* B-type*/ io.types(3) -> Cat(Fill(19, io.instr(31)), io.instr(31), io.instr(7), io.instr(30, 25), io.instr(11, 8)),
-      /* U-type*/ io.types(4) -> Cat(io.instr(31, 12), Fill(12, 0.U)),
-      /* J-type*/ io.types(5) -> Cat(Fill(11, io.instr(31)), io.instr(31), io.instr(19, 12), io.instr(20), io.instr(30, 21)),
-      /* Z-type*/ io.types(5) -> io.instr(19, 15).zext,
+      /* U-type*/ io.types(2) -> Cat(io.instr(31, 12), Fill(12, 0.U)),
+      /* J-type*/ io.types(1) -> Cat(Fill(11, io.instr(31)), io.instr(31), io.instr(19, 12), io.instr(20), io.instr(30, 21)),
+      /* Z-type*/ io.types(0) -> io.instr(19, 15).zext.asUInt,
     ))
 }
